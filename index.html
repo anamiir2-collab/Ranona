@@ -2,951 +2,604 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رانيا… رنونه اللي مفيش حد زيها 🤍✨</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Tajawal:wght@300;400;500;700&family=Aref+Ruqaa:wght@400;700&display=swap');
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(160deg, #0d0221 0%, #150637 20%, #1a0a42 35%, #1e1055 50%, #170d45 65%, #0f0830 80%, #0a0420 100%);
-            min-height: 100vh;
-            color: #e8dff5;
-            overflow-x: hidden;
-            position: relative;
-            user-select: none;
-        }
-
-        /* ===== Sky Background ===== */
-        .sky-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .sky-star {
-            position: absolute;
-            background: radial-gradient(circle, #fff 0%, transparent 70%);
-            border-radius: 50%;
-            animation: skyTwinkle var(--dur) ease-in-out infinite;
-            animation-delay: var(--del);
-            opacity: 0;
-        }
-        @keyframes skyTwinkle {
-            0%, 100% { opacity: 0.1; transform: scale(0.8); }
-            50% { opacity: var(--peak); transform: scale(1.2); }
-        }
-
-        /* Shooting stars */
-        .shooting-star {
-            position: absolute;
-            width: 120px;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
-            border-radius: 2px;
-            animation: shoot var(--dur) linear infinite;
-            animation-delay: var(--del);
-            opacity: 0;
-        }
-        @keyframes shoot {
-            0% { opacity: 0; transform: translate(0, 0) rotate(-35deg); }
-            5% { opacity: 1; }
-            15% { opacity: 0; transform: translate(-300px, 200px) rotate(-35deg); }
-            100% { opacity: 0; }
-        }
-
-        /* ===== Floating Particles ===== */
-        .particles-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            animation: particleFloat var(--dur) ease-in-out infinite;
-            animation-delay: var(--del);
-            font-size: var(--size);
-            opacity: 0;
-        }
-        @keyframes particleFloat {
-            0% { opacity: 0; transform: translateY(20px) scale(0.5); }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.4; }
-            100% { opacity: 0; transform: translateY(-80px) scale(1.1); }
-        }
-
-        /* ===== Transition Burst ===== */
-        .burst-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 50;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .burst-item {
-            position: absolute;
-            font-size: 20px;
-            opacity: 0;
-            animation: burstAnim 1.8s ease-out forwards;
-        }
-        @keyframes burstAnim {
-            0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(0deg); }
-            20% { opacity: 1; }
-            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.8) rotate(360deg); }
-        }
-
-        /* ===== Main Container ===== */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* ===== Progress Bar ===== */
-        .progress-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-        .progress-wrapper.visible { opacity: 1; }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #c084fc, #e879f9, #f0abfc, #c084fc);
-            background-size: 200% 100%;
-            animation: progressShine 3s linear infinite;
-            border-radius: 0 2px 2px 0;
-            transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
-        }
-        @keyframes progressShine {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* ===== Title Screen ===== */
-        .title-screen {
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-        }
-        .title-screen.show { opacity: 1; }
-        .title-screen.hide {
-            opacity: 0;
-            transform: translateY(-30px);
-            transition: all 1s ease;
-        }
-
-        .title-ornament {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            animation: gentlePulse 3s ease-in-out infinite;
-        }
-        @keyframes gentlePulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.15); opacity: 1; }
-        }
-
-        .main-title {
-            font-family: 'Aref Ruqaa', serif;
-            font-size: clamp(1.8rem, 5.5vw, 3.2rem);
-            background: linear-gradient(135deg, #e0b0ff, #f0abfc, #fcd6ec, #f0abfc, #e0b0ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titleGradient 6s ease-in-out infinite;
-            line-height: 1.8;
-            margin-bottom: 8px;
-        }
-        @keyframes titleGradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .title-sub {
-            font-family: 'Amiri', serif;
-            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
-            color: #c4b5d9;
-            font-style: italic;
-            margin-bottom: 40px;
-            opacity: 0.8;
-        }
-
-        /* ===== Buttons ===== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px 36px;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        .btn.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .btn-start {
-            background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.4);
-        }
-        .btn-start:hover {
-            transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 8px 35px rgba(124, 58, 237, 0.6);
-        }
-
-        .btn-continue {
-            background: linear-gradient(135deg, #a855f7, #d946ef, #f0abfc);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(168, 85, 247, 0.35);
-        }
-        .btn-continue:hover {
-            transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 8px 35px rgba(168, 85, 247, 0.55);
-        }
-
-        .btn-restart {
-            background: linear-gradient(135deg, #6d28d9, #8b5cf6, #a78bfa);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(109, 40, 217, 0.4);
-        }
-        .btn-restart:hover {
-            transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 8px 35px rgba(109, 40, 217, 0.6);
-        }
-
-        /* ===== Story Area ===== */
-        .story-area {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-        .story-area.show {
-            display: flex;
-        }
-
-        .story-card {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(192, 132, 252, 0.12);
-            border-radius: 24px;
-            padding: clamp(28px, 5vw, 50px);
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-        .story-card::before, .story-card::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            width: 100%; height: 3px;
-            background: linear-gradient(90deg, transparent, #c084fc, #e879f9, #c084fc, transparent);
-        }
-        .story-card::before { top: 0; }
-        .story-card::after { bottom: 0; }
-
-        .section-icon {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 6px;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-        .section-icon.show { opacity: 1; }
-
-        .section-heading {
-            font-family: 'Aref Ruqaa', serif;
-            font-size: clamp(1.3rem, 3.5vw, 1.8rem);
-            color: #d8b4fe;
-            text-align: center;
-            margin-bottom: 22px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.8s ease;
-        }
-        .section-heading.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .story-text {
-            font-family: 'Amiri', serif;
-            font-size: clamp(1.05rem, 2.5vw, 1.25rem);
-            line-height: 2.3;
-            color: #e0d4ef;
-            text-align: justify;
-            min-height: 1em;
-            position: relative;
-        }
-        .story-text.indent { text-indent: 2em; }
-
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background: #c084fc;
-            margin-right: 2px;
-            vertical-align: middle;
-            animation: cursorBlink 0.8s step-end infinite;
-            box-shadow: 0 0 8px rgba(192, 132, 252, 0.6);
-        }
-        @keyframes cursorBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Name highlight */
-        .name-hl {
-            color: #f0abfc;
-            font-weight: 700;
-            text-shadow: 0 0 15px rgba(240, 171, 252, 0.4);
-        }
-
-        .quote-block {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(168, 85, 247, 0.05));
-            border-right: 4px solid #a855f7;
-            border-radius: 0 16px 16px 0;
-            padding: 20px 24px;
-            margin: 20px 0;
-            font-family: 'Aref Ruqaa', serif;
-            font-size: clamp(1.1rem, 2.8vw, 1.3rem);
-            color: #e0b0ff;
-            line-height: 2.1;
-            text-align: center;
-            text-indent: 0 !important;
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: all 1s ease;
-        }
-        .quote-block.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .para-space { height: 18px; }
-
-        .buttons-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-            min-height: 60px;
-        }
-
-        /* ===== Final Message ===== */
-        .final-message {
-            text-align: center;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            margin-bottom: 20px;
-        }
-        .final-message.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .final-big-text {
-            font-family: 'Aref Ruqaa', serif;
-            font-size: clamp(1.6rem, 5vw, 2.8rem);
-            background: linear-gradient(135deg, #e0b0ff, #f9a8d4, #fde68a, #f9a8d4, #e0b0ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titleGradient 5s ease-in-out infinite;
-            margin-bottom: 30px;
-            line-height: 1.8;
-        }
-        .final-hearts {
-            font-size: 2.5rem;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            15% { transform: scale(1.2); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-        }
-
-        .section-content {
-            opacity: 1;
-            transition: opacity 0.8s ease;
-        }
-        .section-content.fade-out {
-            opacity: 0;
-        }
-
-        @media (max-width: 600px) {
-            .container { padding: 15px 12px; }
-            .story-card { padding: 22px 18px; border-radius: 18px; }
-            .btn { padding: 12px 28px; font-size: 1rem; }
-            .quote-block { padding: 15px 16px; margin: 15px 0; }
-            .buttons-area { gap: 8px; }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#F8E8EE">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>رانيا | يومي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- Sky Background -->
-    <div class="sky-bg" id="skyBg"></div>
-
-    <!-- Floating Particles -->
-    <div class="particles-container" id="particlesContainer"></div>
-
-    <!-- Burst Effects Container -->
-    <div class="burst-container" id="burstContainer"></div>
-
-    <!-- Progress Bar -->
-    <div class="progress-wrapper" id="progressWrapper">
-        <div class="progress-bar" id="progressBar"></div>
+    <!-- ==================== SPLASH SCREEN ==================== -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <div class="splash-icon">🌸</div>
+                <h1 class="splash-title">رانيا</h1>
+                <p class="splash-subtitle">يومي</p>
+            </div>
+            <div class="splash-hearts">
+                <span class="heart">💗</span>
+                <span class="heart">💜</span>
+                <span class="heart">🤍</span>
+            </div>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+            <p class="splash-quote">"كل يوم هو بداية جديدة"</p>
+        </div>
     </div>
 
-    <!-- Main Container -->
-    <div class="container">
-
-        <!-- Title Screen -->
-        <div class="title-screen" id="titleScreen">
-            <div class="title-ornament">✨ 🤍 ✨</div>
-            <h1 class="main-title">رانيا… رنونه اللي مفيش حد زيها 🤍✨</h1>
-            <p class="title-sub">حكاية أجمل بنوتة ممكن تشوفها في العالم … 🥰🤍🤍</p>
-            <button class="btn btn-start" id="btnStart" onclick="startStory()">ابدأ الحكاية ✨</button>
+    <!-- ==================== RENONA MASCOT ==================== -->
+    <div id="renona-mascot" class="renona-mascot hidden">
+        <div class="renona-bubble">
+            <p id="renona-text"></p>
+            <button class="renona-close" onclick="hideRenona()">×</button>
         </div>
+        <div class="renona-avatar">🐰</div>
+    </div>
 
-        <!-- Story Area -->
-        <div class="story-area" id="storyArea">
-            <div class="story-card" id="storyCard">
-                <div class="section-content" id="sectionContent">
-                    <div class="section-icon" id="sectionIcon"></div>
-                    <div class="section-heading" id="sectionHeading"></div>
-                    <div id="textContainer"></div>
+    <!-- ==================== MAIN APP ==================== -->
+    <div id="app" class="app hidden">
+
+        <!-- Top Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="header-btn" onclick="toggleSidebar()" aria-label="القائمة">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+                <div class="header-title">
+                    <span class="header-name">رانيا</span>
+                    <span class="header-divider">|</span>
+                    <span class="header-app">يومي</span>
+                </div>
+                <button class="header-btn" onclick="showSection('settings')" aria-label="الإعدادات">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+            <div class="sidebar-panel">
+                <div class="sidebar-header">
+                    <div class="sidebar-avatar">👑</div>
+                    <div class="sidebar-info">
+                        <h3>رانيا</h3>
+                        <p>كوتي الحلوة 💗</p>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <button class="sidebar-item active" onclick="showSection('home'); toggleSidebar();">
+                        <span class="sidebar-icon">🏠</span>
+                        <span>الرئيسية</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('tasks'); toggleSidebar();">
+                        <span class="sidebar-icon">✅</span>
+                        <span>مهام اليوم</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('calendar'); toggleSidebar();">
+                        <span class="sidebar-icon">📅</span>
+                        <span>التقويم</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('stats'); toggleSidebar();">
+                        <span class="sidebar-icon">📊</span>
+                        <span>الإحصائيات</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('habits'); toggleSidebar();">
+                        <span class="sidebar-icon">🌿</span>
+                        <span>العادات</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('goals'); toggleSidebar();">
+                        <span class="sidebar-icon">🎯</span>
+                        <span>الأهداف</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('diary'); toggleSidebar();">
+                        <span class="sidebar-icon">📔</span>
+                        <span>المذكرات</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('achievements'); toggleSidebar();">
+                        <span class="sidebar-icon">🏆</span>
+                        <span>الإنجازات</span>
+                    </button>
+                    <button class="sidebar-item" onclick="showSection('endday'); toggleSidebar();">
+                        <span class="sidebar-icon">🌙</span>
+                        <span>نهاية اليوم</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button class="sidebar-item" onclick="showSection('settings'); toggleSidebar();">
+                        <span class="sidebar-icon">⚙️</span>
+                        <span>الإعدادات</span>
+                    </button>
+                </div>
+                <div class="sidebar-footer">
+                    <p>مع حب، رنونة 🐰</p>
                 </div>
             </div>
+        </nav>
 
-            <div class="buttons-area" id="buttonsArea">
-                <button class="btn btn-continue" id="btnPrev" onclick="prevSection()" style="display:none;">السابق ↩</button>
-                <button class="btn btn-continue" id="btnContinue" onclick="nextSection()" style="display:none;">التالي 🤍</button>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main class="main-content">
+
+            <!-- ===== HOME PAGE ===== -->
+            <section id="home" class="page-section active">
+                <div class="home-container">
+                    <!-- Greeting Card -->
+                    <div class="glass-card greeting-card">
+                        <div class="greeting-content">
+                            <div class="greeting-text">
+                                <h2 id="greeting-text">صباح الخير يا كوتي 🌸</h2>
+                                <p id="greeting-sub">يلا نبدأ يوم جديد.</p>
+                            </div>
+                            <div class="greeting-emoji">☀️</div>
+                        </div>
+                        <div class="date-row">
+                            <div class="date-item">
+                                <span class="date-label">الميلادي</span>
+                                <span id="date-gregorian" class="date-value">--</span>
+                            </div>
+                            <div class="date-divider"></div>
+                            <div class="date-item">
+                                <span class="date-label">الهجري</span>
+                                <span id="date-hijri" class="date-value">--</span>
+                            </div>
+                            <div class="date-divider"></div>
+                            <div class="date-item">
+                                <span class="date-label">اليوم</span>
+                                <span id="day-name" class="date-value">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Quote -->
+                    <div class="glass-card quote-card">
+                        <div class="quote-icon">💭</div>
+                        <p id="daily-quote" class="quote-text">"اللهم بارك لي في يومي"</p>
+                        <div class="quote-decoration">
+                            <span>✨</span>
+                            <span>🌸</span>
+                            <span>✨</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Circle -->
+                    <div class="glass-card progress-card">
+                        <h3 class="card-title">تقدم اليوم</h3>
+                        <div class="progress-circle-container">
+                            <div class="progress-circle-wrapper">
+                                <svg class="progress-circle" viewBox="0 0 200 200">
+                                    <defs>
+                                        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#E8B4B8"/>
+                                            <stop offset="50%" style="stop-color:#D4A5D9"/>
+                                            <stop offset="100%" style="stop-color:#C9B1FF"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                    <circle class="progress-bg" cx="100" cy="100" r="85"/>
+                                    <circle id="progress-ring" class="progress-ring" cx="100" cy="100" r="85"/>
+                                </svg>
+                                <div class="progress-center">
+                                    <span id="progress-percent" class="progress-percent">0%</span>
+                                    <span class="progress-label">إنجاز</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-stats">
+                            <div class="progress-stat">
+                                <span id="done-count" class="stat-number">0</span>
+                                <span class="stat-label">منجزة ✅</span>
+                            </div>
+                            <div class="progress-stat">
+                                <span id="remaining-count" class="stat-number">0</span>
+                                <span class="stat-label">متبقية ⏳</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <button class="action-btn primary" onclick="startDay()">
+                            <span class="action-icon">🚀</span>
+                            <span>بدء اليوم</span>
+                        </button>
+                        <button class="action-btn secondary" onclick="showSection('tasks')">
+                            <span class="action-icon">📝</span>
+                            <span>المهام</span>
+                        </button>
+                    </div>
+
+                    <!-- Prayer Times Mini -->
+                    <div class="glass-card prayers-mini">
+                        <h3 class="card-title">🕌 الصلوات</h3>
+                        <div class="prayers-row" id="prayers-row">
+                            <div class="prayer-mini" data-prayer="fajr">
+                                <span class="prayer-name">الفجر</span>
+                                <span class="prayer-status">○</span>
+                            </div>
+                            <div class="prayer-mini" data-prayer="dhuhr">
+                                <span class="prayer-name">الظهر</span>
+                                <span class="prayer-status">○</span>
+                            </div>
+                            <div class="prayer-mini" data-prayer="asr">
+                                <span class="prayer-name">العصر</span>
+                                <span class="prayer-status">○</span>
+                            </div>
+                            <div class="prayer-mini" data-prayer="maghrib">
+                                <span class="prayer-name">المغرب</span>
+                                <span class="prayer-status">○</span>
+                            </div>
+                            <div class="prayer-mini" data-prayer="isha">
+                                <span class="prayer-name">العشاء</span>
+                                <span class="prayer-status">○</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Water Tracker Mini -->
+                    <div class="glass-card water-mini">
+                        <h3 class="card-title">💧 تتبع الماء</h3>
+                        <div class="water-cups" id="water-cups">
+                            <button class="water-cup" onclick="toggleWater(0)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(1)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(2)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(3)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(4)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(5)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(6)">💧</button>
+                            <button class="water-cup" onclick="toggleWater(7)">💧</button>
+                        </div>
+                        <p class="water-count"><span id="water-count">0</span> / 8 أكواب</p>
+                    </div>
+
+                    <!-- Mood Selector -->
+                    <div class="glass-card mood-card">
+                        <h3 class="card-title">كيف حالك اليوم؟</h3>
+                        <div class="mood-options">
+                            <button class="mood-btn" onclick="setMood('amazing')" data-mood="amazing">
+                                <span class="mood-emoji">🤩</span>
+                                <span class="mood-label">رائع</span>
+                            </button>
+                            <button class="mood-btn" onclick="setMood('happy')" data-mood="happy">
+                                <span class="mood-emoji">😊</span>
+                                <span class="mood-label">سعيد</span>
+                            </button>
+                            <button class="mood-btn" onclick="setMood('normal')" data-mood="normal">
+                                <span class="mood-emoji">😐</span>
+                                <span class="mood-label">عادي</span>
+                            </button>
+                            <button class="mood-btn" onclick="setMood('tired')" data-mood="tired">
+                                <span class="mood-emoji">😴</span>
+                                <span class="mood-label">متعب</span>
+                            </button>
+                            <button class="mood-btn" onclick="setMood('sad')" data-mood="sad">
+                                <span class="mood-emoji">😢</span>
+                                <span class="mood-label">حزين</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== TASKS PAGE ===== -->
+            <section id="tasks" class="page-section">
+                <div class="section-header">
+                    <h2>مهام اليوم</h2>
+                    <p class="section-subtitle">خلي رنونة فخورة بيكي 💗</p>
+                </div>
+                <div class="tasks-container" id="tasks-container">
+                    <!-- Tasks will be generated by JS -->
+                </div>
+                <button class="fab" onclick="showAddTaskModal()" aria-label="إضافة مهمة">
+                    <span>+</span>
+                </button>
+            </section>
+
+            <!-- ===== CALENDAR PAGE ===== -->
+            <section id="calendar" class="page-section">
+                <div class="section-header">
+                    <h2>التقويم</h2>
+                    <p class="section-subtitle">تتبع إنجازك اليومي 📅</p>
+                </div>
+                <div class="calendar-container" id="calendar-container">
+                    <!-- Calendar generated by JS -->
+                </div>
+            </section>
+
+            <!-- ===== STATS PAGE ===== -->
+            <section id="stats" class="page-section">
+                <div class="section-header">
+                    <h2>الإحصائيات</h2>
+                    <p class="section-subtitle">شوفي تقدمك يا كوتي 📊</p>
+                </div>
+                <div class="stats-container" id="stats-container">
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-value" id="stat-complete-days">0</div>
+                        <div class="stat-label">أيام مكتملة</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-value" id="stat-streak">0</div>
+                        <div class="stat-label">أطول سلسلة</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="stat-avg">0%</div>
+                        <div class="stat-label">متوسط الإنجاز</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value" id="stat-total-tasks">0</div>
+                        <div class="stat-label">إجمالي المهام</div>
+                    </div>
+                    <div class="glass-card chart-card">
+                        <h3 class="card-title">إنجاز الأسبوع</h3>
+                        <canvas id="week-chart" width="350" height="200"></canvas>
+                    </div>
+                    <div class="glass-card chart-card">
+                        <h3 class="card-title">توزيع المهام</h3>
+                        <canvas id="category-chart" width="350" height="200"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HABITS PAGE ===== -->
+            <section id="habits" class="page-section">
+                <div class="section-header">
+                    <h2>العادات</h2>
+                    <p class="section-subtitle">بني عاداتك خطوة بخطوة 🌿</p>
+                </div>
+                <div class="habits-container" id="habits-container">
+                    <!-- Habits generated by JS -->
+                </div>
+                <button class="fab" onclick="showAddHabitModal()" aria-label="إضافة عادة">
+                    <span>+</span>
+                </button>
+            </section>
+
+            <!-- ===== GOALS PAGE ===== -->
+            <section id="goals" class="page-section">
+                <div class="section-header">
+                    <h2>الأهداف</h2>
+                    <p class="section-subtitle">حطي هدفك وكملي 🎯</p>
+                </div>
+                <div class="goals-container" id="goals-container">
+                    <!-- Goals generated by JS -->
+                </div>
+                <button class="fab" onclick="showAddGoalModal()" aria-label="إضافة هدف">
+                    <span>+</span>
+                </button>
+            </section>
+
+            <!-- ===== DIARY PAGE ===== -->
+            <section id="diary" class="page-section">
+                <div class="section-header">
+                    <h2>المذكرات</h2>
+                    <p class="section-subtitle">اكتبي يومك يا كوتي 📔</p>
+                </div>
+                <div class="diary-container" id="diary-container">
+                    <!-- Diary entries generated by JS -->
+                </div>
+                <button class="fab" onclick="showAddDiaryModal()" aria-label="إضافة يومية">
+                    <span>+</span>
+                </button>
+            </section>
+
+            <!-- ===== ACHIEVEMENTS PAGE ===== -->
+            <section id="achievements" class="page-section">
+                <div class="section-header">
+                    <h2>الإنجازات</h2>
+                    <p class="section-subtitle">أوسمتك يا بطلة 🏆</p>
+                </div>
+                <div class="achievements-container" id="achievements-container">
+                    <!-- Achievements generated by JS -->
+                </div>
+            </section>
+
+            <!-- ===== END DAY PAGE ===== -->
+            <section id="endday" class="page-section">
+                <div class="section-header">
+                    <h2>نهاية اليوم</h2>
+                    <p class="section-subtitle">تقرير يومك يا كوتي 🌙</p>
+                </div>
+                <div class="endday-container" id="endday-container">
+                    <!-- End day report generated by JS -->
+                </div>
+            </section>
+
+            <!-- ===== SETTINGS PAGE ===== -->
+            <section id="settings" class="page-section">
+                <div class="section-header">
+                    <h2>الإعدادات</h2>
+                    <p class="section-subtitle">خصصي تطبيقك ⚙️</p>
+                </div>
+                <div class="settings-container">
+                    <div class="glass-card settings-group">
+                        <h3 class="settings-title">المظهر</h3>
+                        <div class="setting-item">
+                            <span class="setting-label">الوضع الداكن</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <span class="setting-label">الأصوات</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="sound-toggle" checked onchange="toggleSound()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="glass-card settings-group">
+                        <h3 class="settings-title">الألوان</h3>
+                        <div class="color-themes">
+                            <button class="color-theme active" data-theme="pink" onclick="setTheme('pink')" style="background: linear-gradient(135deg, #F8E8EE, #E8B4B8)"></button>
+                            <button class="color-theme" data-theme="lavender" onclick="setTheme('lavender')" style="background: linear-gradient(135deg, #E6E6FA, #D4A5D9)"></button>
+                            <button class="color-theme" data-theme="rose" onclick="setTheme('rose')" style="background: linear-gradient(135deg, #FFF0F3, #FFB6C1)"></button>
+                            <button class="color-theme" data-theme="purple" onclick="setTheme('purple')" style="background: linear-gradient(135deg, #F3E8FF, #C9B1FF)"></button>
+                        </div>
+                    </div>
+                    <div class="glass-card settings-group">
+                        <h3 class="settings-title">البيانات</h3>
+                        <button class="settings-btn" onclick="exportData()">
+                            <span>📤</span> تصدير البيانات (JSON)
+                        </button>
+                        <button class="settings-btn" onclick="importData()">
+                            <span>📥</span> استيراد البيانات
+                        </button>
+                        <button class="settings-btn danger" onclick="clearAllData()">
+                            <span>🗑️</span> مسح جميع البيانات
+                        </button>
+                    </div>
+                    <div class="glass-card settings-group">
+                        <h3 class="settings-title">عن التطبيق</h3>
+                        <div class="about-info">
+                            <p>رانيا | يومي</p>
+                            <p>إصدار 1.0</p>
+                            <p>صنع بحب لرانيا 💗</p>
+                            <p>مع رنونة 🐰</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="showSection('home')" data-section="home">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">الرئيسية</span>
+            </button>
+            <button class="nav-item" onclick="showSection('tasks')" data-section="tasks">
+                <span class="nav-icon">✅</span>
+                <span class="nav-label">المهام</span>
+            </button>
+            <button class="nav-item" onclick="showSection('calendar')" data-section="calendar">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">التقويم</span>
+            </button>
+            <button class="nav-item" onclick="showSection('stats')" data-section="stats">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">الإحصائيات</span>
+            </button>
+            <button class="nav-item" onclick="showSection('more')" data-section="more">
+                <span class="nav-icon">☰</span>
+                <span class="nav-label">المزيد</span>
+            </button>
+        </nav>
+
+        <!-- More Menu Modal -->
+        <div id="more-menu" class="modal">
+            <div class="modal-overlay" onclick="closeMoreMenu()"></div>
+            <div class="modal-content more-menu-content">
+                <div class="more-grid">
+                    <button class="more-item" onclick="showSection('habits'); closeMoreMenu();">
+                        <span class="more-icon">🌿</span>
+                        <span>العادات</span>
+                    </button>
+                    <button class="more-item" onclick="showSection('goals'); closeMoreMenu();">
+                        <span class="more-icon">🎯</span>
+                        <span>الأهداف</span>
+                    </button>
+                    <button class="more-item" onclick="showSection('diary'); closeMoreMenu();">
+                        <span class="more-icon">📔</span>
+                        <span>المذكرات</span>
+                    </button>
+                    <button class="more-item" onclick="showSection('achievements'); closeMoreMenu();">
+                        <span class="more-icon">🏆</span>
+                        <span>الإنجازات</span>
+                    </button>
+                    <button class="more-item" onclick="showSection('endday'); closeMoreMenu();">
+                        <span class="more-icon">🌙</span>
+                        <span>نهاية اليوم</span>
+                    </button>
+                    <button class="more-item" onclick="showSection('settings'); closeMoreMenu();">
+                        <span class="more-icon">⚙️</span>
+                        <span>الإعدادات</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Final Message -->
-        <div class="final-message" id="finalMessage" style="display:none;">
-            <div class="final-big-text">مفيش حد زي رنونه 🤍✨</div>
-            <div class="final-hearts">🤍 ✨ 🤍</div>
+        <!-- Add Task Modal -->
+        <div id="add-task-modal" class="modal">
+            <div class="modal-overlay" onclick="closeAddTaskModal()"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>إضافة مهمة جديدة</h3>
+                    <button class="modal-close" onclick="closeAddTaskModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>اسم المهمة</label>
+                        <input type="text" id="task-name" placeholder="مثال: قراءة القرآن">
+                    </div>
+                    <div class="form-group">
+                        <label>الفئة</label>
+                        <select id="task-category">
+                            <option value="worship">🕌 العبادات</option>
+                            <option value="health">💪 الصحة</option>
+                            <option value="study">📚 الدراسة</option>
+                            <option value="work">💼 العمل</option>
+                            <option value="home">🏠 المنزل</option>
+                            <option value="selfcare">🌸 العناية بالنفس</option>
+                            <option value="relations">💕 العلاقات</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الوقت</label>
+                            <input type="time" id="task-time">
+                        </div>
+                        <div class="form-group">
+                            <label>الأولوية</label>
+                            <select id="task-priority">
+                                <option value="high">🔴 عالية</option>
+                                <option value="medium" selected>🟡 متوسطة</option>
+                                <option value="low">🟢 منخفضة</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات</label>
+                        <textarea id="task-notes" rows="2" placeholder="أي ملاحظات إضافية..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeAddTaskModal()">إلغاء</button>
+                    <button class="btn-primary" onclick="addTask()">إضافة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast">
+            <span id="toast-icon">✨</span>
+            <span id="toast-message"></span>
         </div>
 
     </div>
 
-    <script>
-    // ===================== CONFIG =====================
-    const TYPE_SPEED = 28;        // ms per character
-    const QUOTE_SPEED = 35;       // ms per character
-    const BURST_COUNT = 18;       // particles per burst
-
-    // ===================== STORY DATA =====================
-    const sections = [
-        {
-            icon: '🤍',
-            heading: 'حكاية رنونة',
-            paragraphs: [
-                { text: 'في يوم 3 مايو 2007، اتولدت رانيا، البنت اللي يمكن اسمها عادي عند ناس كتير، بس لما تعرفها وتبص لتفاصيلها تكتشف إن مفيش فيها حاجة عادية. وأنا بحب أناديها رنونة، لأن الاسم ده لايق عليها أوي.', indent: true },
-                { text: 'رنونة بنت بسيطة بطبعها، وده أكتر شيء مميز فيها. مش بتحاول تلفت الانتباه، ومش محتاجة تتصنع عشان الناس تاخد بالها منها. هي بس بتكون على طبيعتها، ومع ذلك وجودها لوحده بيخلي المكان أهدى وأحلى.', indent: true }
-            ]
-        },
-        {
-            icon: '🌸',
-            heading: 'جمالها اللي بيتشاف في التفاصيل',
-            paragraphs: [
-                { text: 'أنا بجد مشوفتش في جمالها زيه خالص. مش قصدي ملامح حلوة وخلاص، لأن جمال رنونة أكبر من كده. في عينيها براءة، وفي ابتسامتها راحة، وفي طريقتها وهي بتتكلم حاجة تخليك تركز معاها من غير ما تحس.', indent: true },
-                { text: 'والأجمل إن كل ده بيظهر وهي عادية جدًا. ممكن تكون قاعدة بتتكلم أو ساكتة أو بتضحك على حاجة بسيطة، وبرضه تلاقي فيها حاجة بتشدك. كأن جمالها مش محتاج مناسبة عشان يظهر.', indent: true }
-            ]
-        },
-        {
-            icon: '✨',
-            heading: 'موقف صغير بس فاكره',
-            paragraphs: [
-                { text: 'فاكر مرة كانت قاعدة وسط ناس وبتسمع الكلام من غير ما تتدخل كتير. كانت هادية وعلى طبيعتها، ولما حد قال حاجة ضحكت فجأة. ضحكتها وقتها كانت بسيطة جدًا، بس كانت كفاية تغيّر جو القعدة كلها.', indent: true },
-                { text: 'في اللحظة دي حسيت إن دي رنونة اللي بتخلي الحاجات البسيطة ليها معنى. مش محتاجة تعمل حاجة كبيرة، مجرد ابتسامة أو ضحكة منها ممكن تخلي اللي حواليها يبتسموا معاها.', indent: true }
-            ],
-            quote: 'أجمل حاجة في رنونة إنها مش بتحاول تبقى مميزة... هي مميزة وهي على طبيعتها.'
-        },
-        {
-            icon: '🤍',
-            heading: 'رنونة زي ما هي',
-            paragraphs: [
-                { text: 'يمكن أجمل حاجة فيها إنها مش واخدة بالها من كل ده. شايفة نفسها بنت عادية، مع إن عفويتها وبساطتها هما أصلًا أكتر حاجات مخليينها مختلفة.', indent: true },
-                { text: 'وفي وقت بقى فيه ناس كتير بتحاول تظهر بصورة معينة، رنونة لسه محتفظة بالحاجة اللي بتخليها حلوة بجد: إنها نفسها، من غير فلاتر ولا تصنع ولا محاولة إنها تبقى شبه حد.', indent: true }
-            ]
-        },
-        {
-            icon: '🌙',
-            heading: 'ساندريلا زماننا',
-            paragraphs: [
-                { text: 'وعشان كده أنا بشوف رنونة كأنها ساندريلا، بس مش ساندريلا بتاعة القصور والعربيات السحرية. دي ساندريلا من وسط حياتنا العادية، بنت بسيطة، جميلة، وضحكتها قادرة تخلي يوم تقيل يبقى أخف.', indent: true },
-                { text: 'ولو الحكايات القديمة كانت بتقول إن الأميرة بتتميز عن غيرها، فرَنونة مميزة من غير ما تحتاج لقب أميرة أصلًا. يكفي إنها رنونة، والباقي كله تفاصيل حلوة اتجمعت فيها.', indent: true }
-            ],
-            quote: 'أنا مشوفتش في جمال رنونة زيه خالص... ويمكن أجمل حاجة فيها إنها مش عارفة هي جميلة قد إيه. 🤍'
-        },
-        {
-            icon: '💫',
-            heading: 'وفي الآخر...',
-            isFinal: true,
-            paragraphs: [
-                { text: 'لو فضلت أتكلم عن رنونة، هفضل كل شوية أفتكر تفصيلة جديدة وأقول دي كمان لازم تتحكي. عشان هي مش مجرد شكل حلو، دي شخصية بتخلي التفاصيل الصغيرة ليها طعم مختلف.', indent: true },
-                { text: 'وفي الآخر مهما اتقال عنها، هتفضل رنونة هي رنونة... بنت بسيطة من مواليد 3 مايو 2007، بس بالنسبة لي مفيش حد شبهها ولا جمالها بيتكرر.', indent: true }
-            ],
-            finalText: 'رانيا... أو رنونة 🤍<br>بنت بسيطة أوي، بس مفيش فيها حاجة عادية.<br>ومهما اتكلمت عنها، هفضل شايفها أجمل من أي وصف. ✨'
-        }
-    ];
-
-    // ===================== STATE =====================
-    let currentSection = 0;
-    let isTyping = false;
-    let typeTimeout = null;
-    let activeResolve = null;
-    let activeJobs = [];
-    let currentCursor = null;
-
-    // ===================== INIT =====================
-    document.addEventListener('DOMContentLoaded', () => {
-        createSkyStars();
-        createFloatingParticles();
-        setTimeout(() => {
-            document.getElementById('titleScreen').classList.add('show');
-            setTimeout(() => {
-                document.getElementById('btnStart').classList.add('show');
-            }, 800);
-        }, 500);
-    });
-
-    // ===================== SKY STARS =====================
-    function createSkyStars() {
-        const container = document.getElementById('skyBg');
-        for (let i = 0; i < 90; i++) {
-            const star = document.createElement('div');
-            star.className = 'sky-star';
-            const size = 1 + Math.random() * 3;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
-            star.style.setProperty('--del', (Math.random() * 5) + 's');
-            star.style.setProperty('--peak', (0.4 + Math.random() * 0.6).toString());
-            container.appendChild(star);
-        }
-        for (let i = 0; i < 3; i++) {
-            const s = document.createElement('div');
-            s.className = 'shooting-star';
-            s.style.top = (5 + Math.random() * 40) + '%';
-            s.style.left = (30 + Math.random() * 60) + '%';
-            s.style.setProperty('--dur', (6 + Math.random() * 8) + 's');
-            s.style.setProperty('--del', (i * 7 + Math.random() * 4) + 's');
-            container.appendChild(s);
-        }
-    }
-
-    // ===================== FLOATING PARTICLES =====================
-    function createFloatingParticles() {
-        const container = document.getElementById('particlesContainer');
-        const symbols = ['🤍', '✨', '💜', '🩷', '🌸', '⭐'];
-        for (let i = 0; i < 20; i++) {
-            const p = document.createElement('span');
-            p.className = 'particle';
-            p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            p.style.top = (20 + Math.random() * 70) + '%';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.setProperty('--dur', (6 + Math.random() * 10) + 's');
-            p.style.setProperty('--del', (Math.random() * 8) + 's');
-            p.style.setProperty('--size', (10 + Math.random() * 16) + 'px');
-            container.appendChild(p);
-        }
-    }
-
-    // ===================== BURST EFFECT =====================
-    function triggerBurst() {
-        const container = document.getElementById('burstContainer');
-        const symbols = ['✨', '🤍', '⭐', '💫', '💜', '🌸', '🩷', '🌟'];
-        for (let i = 0; i < BURST_COUNT; i++) {
-            const item = document.createElement('span');
-            item.className = 'burst-item';
-            item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            item.style.left = (40 + Math.random() * 20) + '%';
-            item.style.top = (30 + Math.random() * 20) + '%';
-            const angle = Math.random() * Math.PI * 2;
-            const dist = 80 + Math.random() * 200;
-            item.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
-            item.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
-            item.style.animationDelay = (Math.random() * 0.3) + 's';
-            container.appendChild(item);
-            setTimeout(() => item.remove(), 2000);
-        }
-    }
-
-    // ===================== PROGRESS =====================
-    function updateProgress() {
-        const total = sections.length;
-        const pct = ((currentSection + 1) / total) * 100;
-        document.getElementById('progressBar').style.width = pct + '%';
-    }
-
-    // ===================== TEXT HIGHLIGHTING =====================
-    function processText(text) {
-        return text.replace(/(رانيا|رنونة|رنونه)/g, '<span class="name-hl">$1</span>');
-    }
-
-    // ===================== TYPEWRITER ENGINE =====================
-    function typeText(element, html, speed, indent) {
-        return new Promise((resolve) => {
-            isTyping = true;
-            activeResolve = resolve;
-            activeJobs = [];
-
-            if (indent) element.classList.add('indent');
-            element.innerHTML = '';
-
-            const temp = document.createElement('div');
-            temp.innerHTML = html;
-
-            prepareDOM(temp, element, activeJobs);
-
-            currentCursor = document.createElement('span');
-            currentCursor.className = 'cursor';
-            element.appendChild(currentCursor);
-
-            let jobIdx = 0;
-            let charIdx = 0;
-
-            function tick() {
-                if (!isTyping) return;
-
-                if (jobIdx >= activeJobs.length) {
-                    typeTimeout = setTimeout(() => {
-                        if (currentCursor) currentCursor.remove();
-                        finishTyping();
-                    }, 300);
-                    return;
-                }
-
-                const job = activeJobs[jobIdx];
-                if (charIdx < job.text.length) {
-                    job.node.nodeValue += job.text[charIdx];
-                    charIdx++;
-                    if (currentCursor) element.appendChild(currentCursor);
-                    typeTimeout = setTimeout(tick, speed);
-                } else {
-                    jobIdx++;
-                    charIdx = 0;
-                    tick();
-                }
-            }
-
-            tick();
-        });
-    }
-
-    function prepareDOM(sourceParent, targetParent, jobs) {
-        for (const child of sourceParent.childNodes) {
-            if (child.nodeType === Node.TEXT_NODE) {
-                if (child.textContent.length > 0) {
-                    const textNode = document.createTextNode('');
-                    targetParent.appendChild(textNode);
-                    jobs.push({ node: textNode, text: child.textContent });
-                }
-            } else if (child.nodeType === Node.ELEMENT_NODE) {
-                const newElem = child.cloneNode(false);
-                targetParent.appendChild(newElem);
-                prepareDOM(child, newElem, jobs);
-            }
-        }
-    }
-
-    function finishTyping() {
-        if (typeTimeout) clearTimeout(typeTimeout);
-        
-        if (activeJobs && activeJobs.length > 0) {
-            activeJobs.forEach(job => {
-                job.node.nodeValue = job.text;
-            });
-        }
-        if (currentCursor) {
-            currentCursor.remove();
-            currentCursor = null;
-        }
-
-        isTyping = false;
-        const res = activeResolve;
-        activeResolve = null;
-        activeJobs = [];
-        if (res) res();
-    }
-
-    function skipCurrentTyping() {
-        if (isTyping) {
-            finishTyping();
-        }
-    }
-
-    // ===================== STORY FLOW =====================
-    function startStory() {
-        const titleScreen = document.getElementById('titleScreen');
-        titleScreen.classList.add('hide');
-
-        setTimeout(() => {
-            titleScreen.style.display = 'none';
-            const storyArea = document.getElementById('storyArea');
-            storyArea.classList.add('show');
-            document.getElementById('progressWrapper').classList.add('visible');
-            showSection(0);
-        }, 1000);
-    }
-
-    async function showSection(idx) {
-        currentSection = idx;
-        const section = sections[idx];
-        const content = document.getElementById('sectionContent');
-        const textContainer = document.getElementById('textContainer');
-        const sectionIcon = document.getElementById('sectionIcon');
-        const sectionHeading = document.getElementById('sectionHeading');
-        const btnPrev = document.getElementById('btnPrev');
-        const btnContinue = document.getElementById('btnContinue');
-
-        btnPrev.style.display = 'none';
-        btnPrev.classList.remove('show');
-        btnContinue.style.display = 'none';
-        btnContinue.classList.remove('show');
-
-        content.classList.add('fade-out');
-        await sleep(500);
-
-        textContainer.innerHTML = '';
-        sectionIcon.textContent = section.icon;
-        sectionIcon.classList.remove('show');
-        sectionHeading.textContent = section.heading;
-        sectionHeading.classList.remove('show');
-
-        content.classList.remove('fade-out');
-        await sleep(200);
-        sectionIcon.classList.add('show');
-        await sleep(350);
-
-        sectionHeading.classList.add('show');
-        await sleep(450);
-
-        // Type Paragraphs
-        for (let i = 0; i < section.paragraphs.length; i++) {
-            if (i > 0) {
-                const spacer = document.createElement('div');
-                spacer.className = 'para-space';
-                textContainer.appendChild(spacer);
-            }
-
-            const p = document.createElement('div');
-            p.className = 'story-text';
-            textContainer.appendChild(p);
-
-            const processedHTML = processText(section.paragraphs[i].text);
-            await typeText(p, processedHTML, TYPE_SPEED, section.paragraphs[i].indent);
-            await sleep(250);
-        }
-
-        // Type Quote if exists
-        if (section.quote) {
-            const spacer = document.createElement('div');
-            spacer.className = 'para-space';
-            textContainer.appendChild(spacer);
-
-            const q = document.createElement('div');
-            q.className = 'quote-block story-text';
-            textContainer.appendChild(q);
-
-            const processedQuote = processText(section.quote);
-            await sleep(250);
-            q.classList.add('show');
-            await typeText(q, processedQuote, QUOTE_SPEED, false);
-            await sleep(250);
-        }
-
-        // Final text if exists
-        if (section.finalText) {
-            const spacer = document.createElement('div');
-            spacer.className = 'para-space';
-            textContainer.appendChild(spacer);
-
-            const ft = document.createElement('div');
-            ft.className = 'story-text';
-            ft.style.fontFamily = '"Aref Ruqaa", serif';
-            ft.style.fontSize = 'clamp(1.15rem, 3vw, 1.4rem)';
-            ft.style.color = '#d8b4fe';
-            ft.style.textAlign = 'center';
-            ft.style.fontWeight = '700';
-            ft.style.textShadow = '0 0 30px rgba(124, 58, 237, 0.2)';
-            ft.style.marginTop = '20px';
-            ft.style.lineHeight = '2.4';
-            textContainer.appendChild(ft);
-
-            const processedFinal = processText(section.finalText.replace(/<br>/g, '\n')).replace(/\n/g, '<br>');
-            await sleep(350);
-            await typeText(ft, processedFinal, QUOTE_SPEED, false);
-            await sleep(400);
-        }
-
-        updateProgress();
-
-        if (section.isFinal) {
-            await sleep(300);
-            showFinalMessage();
-            return;
-        }
-
-        btnPrev.style.display = currentSection > 0 ? 'inline-flex' : 'none';
-        btnContinue.style.display = 'inline-flex';
-
-        await sleep(100);
-        if (currentSection > 0) btnPrev.classList.add('show');
-        btnContinue.classList.add('show');
-    }
-
-    function prevSection() {
-        if (isTyping) {
-            skipCurrentTyping();
-            return;
-        }
-        if (currentSection > 0) {
-            currentSection--;
-            triggerBurst();
-            showSection(currentSection);
-        }
-    }
-
-    function nextSection() {
-        if (isTyping) {
-            skipCurrentTyping();
-            return;
-        }
-        if (currentSection < sections.length - 1) {
-            currentSection++;
-            triggerBurst();
-            showSection(currentSection);
-        }
-    }
-
-    // ===================== FINAL MESSAGE =====================
-    async function showFinalMessage() {
-        document.getElementById('btnPrev').style.display = 'none';
-        document.getElementById('btnContinue').style.display = 'none';
-
-        document.getElementById('progressBar').style.width = '100%';
-
-        const finalMsg = document.getElementById('finalMessage');
-        finalMsg.style.display = 'block';
-
-        await sleep(300);
-        triggerBurst();
-        await sleep(400);
-        finalMsg.classList.add('show');
-
-        await sleep(1200);
-        const buttonsArea = document.getElementById('buttonsArea');
-        const restartBtn = document.createElement('button');
-        restartBtn.className = 'btn btn-restart';
-        restartBtn.textContent = 'إعادة الحكاية 🔄';
-        restartBtn.onclick = restartStory;
-        buttonsArea.appendChild(restartBtn);
-        await sleep(200);
-        restartBtn.classList.add('show');
-
-        setTimeout(() => triggerBurst(), 1500);
-    }
-
-    // ===================== RESTART =====================
-    async function restartStory() {
-        currentSection = 0;
-        isTyping = false;
-
-        const buttonsArea = document.getElementById('buttonsArea');
-        buttonsArea.innerHTML = '';
-
-        const btnPrev = document.createElement('button');
-        btnPrev.className = 'btn btn-continue';
-        btnPrev.id = 'btnPrev';
-        btnPrev.textContent = 'السابق ↩';
-        btnPrev.style.display = 'none';
-        btnPrev.onclick = prevSection;
-        buttonsArea.appendChild(btnPrev);
-
-        const btnContinue = document.createElement('button');
-        btnContinue.className = 'btn btn-continue';
-        btnContinue.id = 'btnContinue';
-        btnContinue.textContent = 'التالي 🤍';
-        btnContinue.style.display = 'none';
-        btnContinue.onclick = nextSection;
-        buttonsArea.appendChild(btnContinue);
-
-        const finalMsg = document.getElementById('finalMessage');
-        finalMsg.classList.remove('show');
-        await sleep(500);
-        finalMsg.style.display = 'none';
-
-        document.getElementById('progressBar').style.width = '0%';
-
-        triggerBurst();
-        await sleep(300);
-        showSection(0);
-    }
-
-    // ===================== HELPERS =====================
-    function sleep(ms) {
-        return new Promise(r => setTimeout(r, ms));
-    }
-
-    // Skip typing instantly on screen tap
-    document.addEventListener('click', (e) => {
-        if (isTyping && !e.target.closest('.btn')) {
-            skipCurrentTyping();
-        }
-    });
-    </script>
+    <script src="script.js"></script>
 </body>
-</html>
-
+                                </html>
